@@ -94,6 +94,54 @@ void addFlight(){
 
 }
 
+void searchFlight(){
+    char source[20], destination[20], date[9];
+    FILE *fptr;
+    FLIGHT viewFlight;
+    fptr = fopen("flights.txt", "r");
+
+    printf("Enter Date (DD-MM-YY): ");
+    scanf("%s", date);
+    printf("Enter source location: ");
+    scanf("%s", source);
+    printf("Enter destination location: ");
+    scanf("%s", destination);
+
+    while(fread(&viewFlight, sizeof(FLIGHT), 1, fptr)){
+        if ((strcmp(source,viewFlight.source) == 0) && (strcmp(destination,viewFlight.destination) == 0) && (strcmp(date,viewFlight.date) == 0)){
+            printf("FlightID: %s\t\tTime: %s\tPrice: (I:%.2f |C: %.2f |A: %.2f)\t Remaining seats: %d\n",viewFlight.flightID,viewFlight.time,viewFlight.price[0],viewFlight.price[1],viewFlight.price[2],viewFlight.availableSeats);
+        }
+    }
+    fclose(fptr);
+}
+
+int countFlight(){
+    int count = 0;
+    FILE *fptr;
+    FLIGHT viewFlight;
+    fptr = fopen("flights.txt", "r");
+
+    while(fread(&viewFlight, sizeof(FLIGHT), 1, fptr)){
+        count+=1;
+    }
+    return count;
+}
+
+/*
+void availPlaces(){
+    char places[20][20];
+    FILE *fptr;
+    FLIGHT viewFlight;
+    fptr = fopen("flights.txt", "r");
+
+    while(fread(&viewFlight, sizeof(FLIGHT), 1, fptr)){
+        if (){
+
+        }
+    }    
+}
+*/
+
 int main() {
     addFlight();
     flightRead();
