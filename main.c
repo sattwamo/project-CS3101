@@ -142,6 +142,118 @@ void availPlaces(){
 }
 */
 
+void updateFlight(char *flightID){
+    char date[9], time[6], source[20], destination[20];
+    float price[3]; 
+    int availableSeats;
+
+    int choice;
+    int count = 0;
+
+    FLIGHT updateFlight;
+    FILE *fptr;
+    fptr = fopen("flights.txt", "r+");
+    
+    while (fread(&updateFlight, sizeof(FLIGHT), 1, fptr)){
+        if (!strcmp(flightID, updateFlight.flightID)){
+            count = 1;
+            p1: printf("Select what you want to update:\
+            \n1. Departure date\
+            \n2. Departure time\
+            \n3. Source location\
+            \n4. Destination location\
+            \n5. Number of available seats\
+            \n6. Price of tickets for infants\
+            \n7. Price of tickets for children\
+            \n8. Price of tickets for adults\
+            \n0. Continue without making any changes\n");
+            scanf("%d", &choice);
+
+            switch (choice)
+            {
+            case 1:
+                printf("Enter new date (DD-MM-YY): ");
+                scanf("%s", date);
+                strcpy(updateFlight.date,date);
+                fseek(fptr, -sizeof(FLIGHT), 1);
+                fwrite(&updateFlight, sizeof(FLIGHT), 1, fptr);
+                break;
+            
+            case 2:
+                printf("Enter new departure time (HH:MM): ");
+                scanf("%s", time);
+                strcpy(updateFlight.time,time);
+                fseek(fptr, -sizeof(FLIGHT), 1);
+                fwrite(&updateFlight, sizeof(FLIGHT), 1, fptr);
+                break;
+            
+            case 3:
+                printf("Enter new source location: ");
+                scanf("%s", source);
+                strcpy(updateFlight.source,source);
+                fseek(fptr, -sizeof(FLIGHT), 1);
+                fwrite(&updateFlight, sizeof(FLIGHT), 1, fptr);
+                break;
+            
+            case 4:
+                printf("Enter new destination location: ");
+                scanf("%s", destination);
+                strcpy(updateFlight.destination,destination);
+                fseek(fptr, -sizeof(FLIGHT), 1);
+                fwrite(&updateFlight, sizeof(FLIGHT), 1, fptr);
+                break;
+            
+            case 5:
+                printf("Enter new number of available seats: ");
+                scanf("%d", &availableSeats);
+                updateFlight.availableSeats = availableSeats;
+                fseek(fptr, -sizeof(FLIGHT), 1);
+                fwrite(&updateFlight, sizeof(FLIGHT), 1, fptr);
+                break;
+            
+            case 6:
+                printf("Enter new price of tickets for infants (in Rs.): ");
+                scanf("%f", &price[0]);
+                updateFlight.price[0] = price[0];
+                fseek(fptr, -sizeof(FLIGHT), 1);
+                fwrite(&updateFlight, sizeof(FLIGHT), 1, fptr);
+                break;
+            
+            case 7:
+                printf("Enter new price of tickets for children (in Rs.): ");
+                scanf("%f", &price[1]);
+                updateFlight.price[1] = price[1];
+                fseek(fptr, -sizeof(FLIGHT), 1);
+                fwrite(&updateFlight, sizeof(FLIGHT), 1, fptr);
+                break;
+            
+            case 8:
+                printf("Enter new price of tickets for adults (in Rs.): ");
+                scanf("%f", &price[2]);
+                updateFlight.price[2] = price[2];
+                fseek(fptr, -sizeof(FLIGHT), 1);
+                fwrite(&updateFlight, sizeof(FLIGHT), 1, fptr);
+                break;
+            
+            case 0:
+                printf("Continuiung... ");
+                break;
+
+            default:
+                printf("Enter a valid choice!!!");
+                break;
+                // goto p1;
+            }
+        }
+    }
+
+    fclose(fptr); 
+
+    if (!count){
+        printf("Enter valid flight ID!\n");
+    }
+}
+
 int main() {
     addFlight();
     flightRead();
