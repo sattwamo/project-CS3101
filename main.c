@@ -328,6 +328,156 @@ void updateFlight(char *flightID){
         printf("Enter valid flight ID!\n");
     }
 }
+// om chakku
+void usersWrite(USERS* user)
+{
+    FILE *fptr;
+    fptr = fopen("logins.txt", "a");
+    fwrite(user, sizeof(USERS), 1, fptr);
+    fclose(fptr);
+}
+
+void adduser()
+{
+    char id[6], email[50], password[4];
+    char userType='B';
+    USERS newuser;
+    printf("enter the following details with care to register yourself on the system\n");
+    strcpy(newuser.userType, userType);
+    printf("enter your email:\n");
+    scanf("%s",email);
+    printf("enter a 6 digit alphanumeric id:\n");
+    scanf("%s",id);
+    printf("enter your 4 digit password:\n");
+    scanf("%s",password);
+    strcpy(newuser.id, id);
+    strcpy(newuser.email, email);
+    strcpy(newuser.password, password);
+    usersWrite(&newuser);
+    printf("Your user id is succesfully created :)\n\n");
+    
+}
+void addadmin()
+{
+    char id[6], email[50], password[4];
+    char userType='A';
+    USERS newadmin;
+    printf("enter the following details with care to register yourself on the system\n");
+    strcpy(newadmin.userType, userType);
+    printf("enter your email:\n");
+    scanf("%s",email);
+    printf("enter a 6 digit alphanumeric id:\n");
+    scanf("%s",id);
+    printf("enter your 4 digit password:\n");
+    scanf("%s",password);
+    strcpy(newadmin.id, id);
+    strcpy(newadmin.email, email);
+    strcpy(newadmin.password, password);
+    usersWrite(&newadmin);
+    printf("Your admin id is succesfully created :)\n\n");
+    
+}
+void checkuser()
+{
+    FILE *fptr;
+    USERS viewuser;
+    fptr = fopen("logins.txt", "r");
+    char id[6];
+    char password[4];
+    printf("Enter your login credentials\n");
+    printf("enter your login id:\n");
+    scanf("%s",id);
+    while(fread(&viewuser, sizeof(USERS), 1, fptr))
+    {
+      if(id==viewuser.id)
+      {
+        printf("enter your 4 digit pasword:\n");
+        scanf("%s",password);
+        if(password==viewuser.id)
+        {
+            printf("Login Succesfull\n");
+        }
+        else
+        {
+            printf("Incorrect Password\n");
+        }
+
+      }
+      else
+      {
+        printf("Id not found :(\n");
+      }
+    }
+    fclose(fptr);
+
+}
+void checkadmin()
+{
+    FILE *fptr;
+    USERS viewadmin;
+    fptr = fopen("logins.txt", "r");
+    char id[6];
+    char password[4];
+    printf("Enter your login credentials\n");
+    printf("enter your login id:\n");
+    scanf("%s",id);
+    while(fread(&viewadmin, sizeof(USERS), 1, fptr))
+    {
+      if(id==viewadmin.id)
+      {
+        printf("enter your 4 digit pasword:\n");
+        scanf("%s",password);
+        if(password==viewadmin.id)
+        {
+            printf("Login Succesfull\n");
+        }
+        else
+        {
+            printf("Incorrect Password\n");
+        }
+
+      }
+      else
+      {
+        printf("Id not found :(\n");
+      }
+    }
+    fclose(fptr);
+
+}
+void admin()
+{
+    addadmin();
+    checkadmin();
+
+}
+void user()
+{
+    adduser();
+    checkuser();
+
+}
+void intro()
+{
+    printf("Welcome to Spicy Flight Reservation System:)\n");
+    int type;
+    printf("Enter 0 if you are a admin or 1 if you are a user:\n");
+    scanf("%d",&type);
+    switch(type)
+    {
+        case 0: 
+               admin();
+               break;
+        case 1:
+               user();
+               break;
+        default:
+               printf("Invalid Input");
+               break;
+
+    }
+
+}
 
 int main() {
     // addFlight();
