@@ -20,13 +20,14 @@ typedef struct flight{
 }FLIGHT;
 
 typedef struct ticket{
-    char ticketNum[9];
+    char ticketNum[10];
     char flightID[6];
     char name[30];
     char ticketType;
     int seatNum;
 }TICKET;
 
+// Sattwamo
 void flightWrite(FLIGHT* flight){
     FILE *fptr;
     fptr = fopen("flights.txt", "a");
@@ -35,6 +36,7 @@ void flightWrite(FLIGHT* flight){
     fclose(fptr);
 }
 
+// Tanish
 void ticketWrite(TICKET* ticket){
     FILE *fptr;
     fptr = fopen("tickets.txt", "a");
@@ -43,6 +45,7 @@ void ticketWrite(TICKET* ticket){
     fclose(fptr);
 }
 
+// Sattwamo
 void flightRead(){
     FILE *fptr;
     FLIGHT viewFlight;
@@ -54,6 +57,23 @@ void flightRead(){
     fclose(fptr);
 }
 
+// Tanish
+FLIGHT* findFlight(char *flightID){
+    FILE *fptr;
+    FLIGHT viewFlight;
+    fptr = fopen("flights.txt", "r");
+    FLIGHT *flight;
+
+    while(fread(&viewFlight, sizeof(FLIGHT), 1, fptr)){
+        if (strcmp(flightID,viewFlight.flightID) == 0){
+            flight = &viewFlight;
+        }
+    }
+    fclose(fptr);
+    return flight;
+}
+
+// Sattwamo
 void addFlight(){
     char flightID[6], date[9], time[6], source[20], destination[20];
     float price[3]; 
@@ -98,10 +118,9 @@ void addFlight(){
     newFlight.price[2] = price[2];
 
     flightWrite(&newFlight);
-
-
 }
 
+// Tanish
 void searchFlight(){
     char source[20], destination[20], date[9];
     FILE *fptr;
@@ -123,20 +142,23 @@ void searchFlight(){
     fclose(fptr);
 }
 
-FLIGHT* findFlight(char *flightID){
-    FILE *fptr;
-    FLIGHT viewFlight;
-    fptr = fopen("flights.txt", "r");
-    FLIGHT *flight;
 
-    while(fread(&viewFlight, sizeof(FLIGHT), 1, fptr)){
-        if (strcmp(flightID,viewFlight.flightID) == 0){
-            flight = &viewFlight;
+void updateSeats(char *flightID){
+    FLIGHT updateFlight;
+    FILE *fptr;
+    fptr = fopen("flights.txt", "r+");
+
+    while (fread(&updateFlight, sizeof(FLIGHT), 1, fptr)){
+        if (!strcmp(updateFlight.flightID, flightID)) {
+            updateFlight.availableSeats--;
+            fseek(fptr, -sizeof(FLIGHT), 1);
+            fwrite(&updateFlight, sizeof(FLIGHT), 1, fptr);
         }
     }
+    
     fclose(fptr);
-    return flight;
 }
+
 
 void makeTicket(char *flightID, char ticketType){
     char name[30];
@@ -146,9 +168,8 @@ void makeTicket(char *flightID, char ticketType){
     char ticketNum[10];
 
     sprintf(ticketNum,"%s-%d",flightID,seatNum);
-    printf("%s", ticketNum);
     printf("Enter passenger name: \n");
-    gets(name);
+    scanf("%s", name);
 
     strcpy(ticket.name,name);
     ticket.seatNum=seatNum;
@@ -157,18 +178,20 @@ void makeTicket(char *flightID, char ticketType){
     strcpy(ticket.ticketNum,ticketNum);
 
     ticketWrite(&ticket);
+    updateSeats(flightID);
 }
+
 
 void bookFlight(){
     char flightID[6];
-    char choice;
+    char choice = 'o';
 
     printf("Enter flight ID: \n");
     scanf("%s",flightID);
 
-    do{
+    while(choice != 'e'){
         printf("Select ticket type (Infant: I / Child: C / Adult: A / Exit: e):\n");
-        scanf("%c", &choice);
+        choice = getchar();
 
         switch(choice){
             case 'I':
@@ -187,7 +210,7 @@ void bookFlight(){
                 break;
             
         }
-    }while(choice != 'e');
+    }
 }
 
 int countFlight(){
@@ -343,7 +366,7 @@ void adduser()
     char userType='B';
     USERS newuser;
     printf("enter the following details with care to register yourself on the system\n");
-    strcpy(newuser.userType, userType);
+    newuser.userType = userType;
     printf("enter your email:\n");
     scanf("%s",email);
     printf("enter a 6 digit alphanumeric id:\n");
@@ -363,7 +386,7 @@ void addadmin()
     char userType='A';
     USERS newadmin;
     printf("enter the following details with care to register yourself on the system\n");
-    strcpy(newadmin.userType, userType);
+    newadmin.userType = userType;
     printf("enter your email:\n");
     scanf("%s",email);
     printf("enter a 6 digit alphanumeric id:\n");
@@ -481,7 +504,10 @@ void intro()
 
 int main() {
     // addFlight();
-    flightRead();
+    // flightRead();
+    // searchFlight();
+    bookFlight();
+    searchFlight();
 
     return 0;
 }
