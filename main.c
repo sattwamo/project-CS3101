@@ -20,11 +20,11 @@ typedef struct flight{
 }FLIGHT;
 
 typedef struct ticket{
-    char ticketNum[6];
+    char ticketNum[9];
     char flightID[6];
     char name[30];
-    char priceType;
-    char seatNum[4];
+    char ticketType;
+    int seatNum;
 }TICKET;
 
 void flightWrite(FLIGHT* flight){
@@ -32,6 +32,14 @@ void flightWrite(FLIGHT* flight){
     fptr = fopen("flights.txt", "a");
 
     fwrite(flight, sizeof(FLIGHT), 1, fptr);
+    fclose(fptr);
+}
+
+void ticketWrite(TICKET* ticket){
+    FILE *fptr;
+    fptr = fopen("tickets.txt", "a");
+
+    fwrite(ticket, sizeof(TICKET), 1, fptr);
     fclose(fptr);
 }
 
@@ -113,6 +121,73 @@ void searchFlight(){
         }
     }
     fclose(fptr);
+}
+
+FLIGHT* findFlight(char *flightID){
+    FILE *fptr;
+    FLIGHT viewFlight;
+    fptr = fopen("flights.txt", "r");
+    FLIGHT *flight;
+
+    while(fread(&viewFlight, sizeof(FLIGHT), 1, fptr)){
+        if (strcmp(flightID,viewFlight.flightID) == 0){
+            flight = &viewFlight;
+        }
+    }
+    fclose(fptr);
+    return flight;
+}
+
+void makeTicket(char *flightID, char ticketType){
+    char name[30];
+    FLIGHT *flight = findFlight(flightID); 
+    int seatNum = flight->availableSeats;
+    TICKET ticket;
+    char ticketNum[10];
+
+    sprintf(ticketNum,"%s-%d",flightID,seatNum);
+    printf("%s", ticketNum);
+    printf("Enter passenger name: \n");
+    gets(name);
+
+    strcpy(ticket.name,name);
+    ticket.seatNum=seatNum;
+    strcpy(ticket.flightID,flightID);
+    ticket.ticketType = ticketType;
+    strcpy(ticket.ticketNum,ticketNum);
+
+    ticketWrite(&ticket);
+}
+
+void bookFlight(){
+    char flightID[6];
+    char choice;
+
+    printf("Enter flight ID: \n");
+    scanf("%s",flightID);
+
+    do{
+        printf("Select ticket type (Infant: I / Child: C / Adult: A / Exit: e):\n");
+        scanf("%c", &choice);
+
+        switch(choice){
+            case 'I':
+                makeTicket(flightID,'I');
+                break;
+            case 'C':
+                makeTicket(flightID,'C');
+                break;
+            case 'A':
+                makeTicket(flightID,'A');
+                break;
+            case 'e':
+                break;
+            default:
+                printf("Enter a valid choice!!!");
+                break;
+            
+        }
+    }while(choice != 'e');
 }
 
 int countFlight(){
@@ -255,7 +330,7 @@ void updateFlight(char *flightID){
 }
 
 int main() {
-    addFlight();
+    // addFlight();
     flightRead();
 
     return 0;
