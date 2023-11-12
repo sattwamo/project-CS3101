@@ -107,8 +107,7 @@ int isTicketPresent(char *ticketNum)
 }
 
 // Tanish
-FLIGHT findFlight(char *flightID)
-{
+FLIGHT findFlight(char *flightID){
     FILE *fptr;
     FLIGHT viewFlight, flight;
     fptr = fopen("flights.txt", "r");
@@ -124,8 +123,7 @@ FLIGHT findFlight(char *flightID)
     return flight;
 }
 
-TICKET findTicket(char *ticketNum)
-{
+TICKET findTicket(char *ticketNum){
 
     FILE *fptr;
     TICKET viewTicket, ticket;
@@ -144,11 +142,12 @@ TICKET findTicket(char *ticketNum)
 }
 
 void viewTicket(char *ticketNum){
-    TICKET ticket = findTicket(ticketNum);
-    FLIGHT flight = findFlight(ticket.flightID);
 
     if (isTicketPresent(ticketNum))
     {
+        TICKET ticket = findTicket(ticketNum);
+        FLIGHT flight = findFlight(ticket.flightID);
+
         printf("Flight ID: %s\n", ticket.flightID);
         printf("Source: %s\n", flight.source);
         printf("Destination: %s\n", flight.destination);
@@ -166,8 +165,7 @@ void viewTicket(char *ticketNum){
 }
 
 // Sattwamo
-void addFlight()
-{
+void addFlight(){
     char flightID[6], date[9], time[6], source[20], destination[20];
     float price[3];
     int availableSeats;
@@ -214,8 +212,7 @@ void addFlight()
 }
 
 // Tanish
-void searchFlight()
-{
+void searchFlight(){
     char source[20], destination[20], date[9];
     FILE *fptr;
     FLIGHT viewFlight;
@@ -239,8 +236,7 @@ void searchFlight()
 }
 
 // Sattwamo
-void updateSeats(char *flightID)
-{
+void updateSeats(char *flightID){
     FLIGHT updateFlight;
     FILE *fptr;
     fptr = fopen("flights.txt", "r+");
@@ -259,8 +255,7 @@ void updateSeats(char *flightID)
 }
 
 // Tanish
-float makeTicket(char *flightID, int ticketType)
-{
+float makeTicket(char *flightID, int ticketType){
     TICKET ticket;
     FLIGHT flight = findFlight(flightID);
     int seatNum = flight.availableSeats;
@@ -297,8 +292,7 @@ float makeTicket(char *flightID, int ticketType)
 }
 
 // Tanish
-void bookFlight()
-{
+void bookFlight(){
     char flightID[6];
     int choice = 5;
 
@@ -337,8 +331,7 @@ void bookFlight()
 }
 
 // Tanish
-int countFlight()
-{
+int countFlight(){
     int count = 0;
     FILE *fptr;
     FLIGHT viewFlight;
@@ -492,16 +485,49 @@ void usersWrite(USERS *user)
     fwrite(user, sizeof(USERS), 1, fptr);
     fclose(fptr);
 }
+
+USERS viewUser(char *userID){
+    FILE* fptr;
+    USERS user, viewUser;
+    fptr = fopen("logins.txt", "r");
+
+    while(fread(&viewUser, sizeof(USERS), 1, fptr)){
+        if (strcmp(viewUser.id, userID) == 0){
+            user = viewUser;
+        }
+    }
+
+    fclose(fptr);
+    return user;
+}
+
+int isUserPresent(char* userID){
+    int check;
+    FILE *fptr;
+    USERS viewUser;
+    fptr = fopen("logins.txt", "r");
+    
+    while(fread(&viewUser, sizeof(USERS), 1, fptr)){
+        if(strcmp(viewUser.id, userID) == 0){
+            check = 1;
+        }
+    
+    fclose(fptr);
+    return check;
+    
+    }
+}
+
 void adduser()
 {
-    char id[6], email[50], password[4];
+    char id[6], email[50], password[5];
     char userType = 'B';
     USERS newuser;
     printf("enter the following details with care to register yourself on the system\n");
     newuser.userType = userType;
     printf("enter your email:\n");
     scanf("%s", email);
-    printf("enter a 6 digit alphanumeric id:\n");
+    printf("enter a 5 digit alphanumeric id:\n");
     scanf("%s", id);
     printf("enter your 4 digit password:\n");
     scanf("%s", password);
@@ -511,6 +537,7 @@ void adduser()
     usersWrite(&newuser);
     printf("Your user id is succesfully created :)\n\n");
 }
+
 void addadmin()
 {
     char id[6], email[50], password[4];
@@ -530,38 +557,59 @@ void addadmin()
     usersWrite(&newadmin);
     printf("Your admin id is succesfully created :)\n\n");
 }
+
 void checkuser()
 {
-    FILE *fptr;
-    USERS viewuser;
-    fptr = fopen("logins.txt", "r");
+    // FILE *fptr;
+    USERS user;
+    // fptr = fopen("logins.txt", "r");
     char id[6];
     char password[4];
     printf("Enter your login credentials\n");
     printf("enter your login id:\n");
     scanf("%s", id);
-    while (fread(&viewuser, sizeof(USERS), 1, fptr))
-    {
-        if (id == viewuser.id)
-        {
-            printf("enter your 4 digit pasword:\n");
-            scanf("%s", password);
-            if (password == viewuser.id)
-            {
-                printf("Login Succesfull\n");
-            }
-            else
-            {
-                printf("Incorrect Password\n");
-            }
+    // int count = 0;
+
+    // while (fread(&viewuser, sizeof(USERS), 1, fptr))
+    // {
+    //     if (id == viewuser.id)
+    //     {
+    //         count = 1;
+    //         printf("enter your 4 digit pasword:\n");
+    //         scanf("%s", password);
+    //         if (password == viewuser.id)
+    //         {
+    //             printf("Login Succesfull\n");
+    //         }
+    //         else
+    //         {
+    //             printf("Incorrect Password\n");
+    //         }
+    //     }
+    // }
+
+    // if (!count){
+    //     printf("User ID not found!!!");
+    // }
+
+    if (isUserPresent){
+        user = viewUser(id);
+        printf("enter your 4 digit pasword:\n");
+        scanf("%s", password);
+        if (strcmp(password, user.id)){
+            printf("Login Succesfull\n");
         }
-        else
-        {
-            printf("Id not found :(\n");
+        else{
+            printf("Incorrect Password\n");
         }
     }
-    fclose(fptr);
+
+    else{
+        printf("Enter valid user ID\n");
+    }
+    // fclose(fptr);
 }
+
 void checkadmin()
 {
     FILE *fptr;
@@ -587,40 +635,39 @@ void checkadmin()
                 printf("Incorrect Password\n");
             }
         }
-        else
-        {
-            printf("Id not found :(\n");
-        }
     }
     fclose(fptr);
 }
+
 void admin()
 {
     addadmin();
     checkadmin();
 }
+
 void user()
 {
     adduser();
     checkuser();
 }
+
 void intro()
 {
     printf("Welcome to Spicy Flight Reservation System:)\n");
     int type;
-    printf("Enter 0 if you are a admin or 1 if you are a user:\n");
+    printf("Enter 0 if you are a admin or 1 if you are a customer: ");
     scanf("%d", &type);
     switch (type)
     {
-    case 0:
-        admin();
-        break;
-    case 1:
-        user();
-        break;
-    default:
-        printf("Invalid Input");
-        break;
+        case 0:
+            admin();
+            break;
+        case 1:
+            user();
+            break;
+        default:
+            printf("Invalid Input");
+            break;
     }
 }
 
