@@ -35,6 +35,7 @@ void flightWrite(FLIGHT* flight){
     fclose(fptr);
 }
 
+
 void ticketWrite(TICKET* ticket){
     FILE *fptr;
     fptr = fopen("tickets.txt", "a");
