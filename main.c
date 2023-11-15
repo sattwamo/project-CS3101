@@ -4,10 +4,10 @@
 
 typedef struct
 {
+    char userType;
     char id[6];
     char email[50];
     char password[15];
-    char userType;
 } USERS;
 
 typedef struct flight
@@ -40,8 +40,9 @@ void flightWrite(FLIGHT *flight)
     fclose(fptr);
 }
 
-
-void ticketWrite(TICKET* ticket){
+// Tanish
+void ticketWrite(TICKET *ticket)
+{
     FILE *fptr;
     fptr = fopen("tickets.txt", "a");
 
@@ -501,7 +502,7 @@ USERS viewUser(char *userID){
 }
 
 int isUserPresent(char* userID){
-    int check;
+    int check = 0;
     FILE *fptr;
     USERS viewUser;
     fptr = fopen("logins.txt", "r");
@@ -511,10 +512,10 @@ int isUserPresent(char* userID){
             check = 1;
         }
     
-    fclose(fptr);
-    return check;
-    
     }
+    fclose(fptr);
+
+    return check;
 }
 
 void adduser()
@@ -557,45 +558,23 @@ void addadmin()
     printf("Your admin id is succesfully created :)\n\n");
 }
 
-void checkuser()
+int checkuser()
 {
-    // FILE *fptr;
+    int isLogin = 0;
     USERS user;
-    // fptr = fopen("logins.txt", "r");
     char id[6];
     char password[4];
+
     printf("Enter your login credentials\n");
     printf("enter your login id:\n");
     scanf("%s", id);
-    // int count = 0;
 
-    // while (fread(&viewuser, sizeof(USERS), 1, fptr))
-    // {
-    //     if (id == viewuser.id)
-    //     {
-    //         count = 1;
-    //         printf("enter your 4 digit pasword:\n");
-    //         scanf("%s", password);
-    //         if (password == viewuser.id)
-    //         {
-    //             printf("Login Succesfull\n");
-    //         }
-    //         else
-    //         {
-    //             printf("Incorrect Password\n");
-    //         }
-    //     }
-    // }
-
-    // if (!count){
-    //     printf("User ID not found!!!");
-    // }
-
-    if (isUserPresent){
+    if (isUserPresent(id)){
         user = viewUser(id);
         printf("enter your 4 digit pasword:\n");
         scanf("%s", password);
         if (strcmp(password, user.id)){
+            isLogin = 1;
             printf("Login Succesfull\n");
         }
         else{
@@ -606,7 +585,8 @@ void checkuser()
     else{
         printf("Enter valid user ID\n");
     }
-    // fclose(fptr);
+    // printf("%d\n", isLogin);
+    return isLogin;
 }
 
 void checkadmin()
@@ -670,15 +650,122 @@ void intro()
     }
 }
 
+void headerIntitial(){
+
+    printf("=================================================================\n");
+    printf("|                    Flight Reservation System                  |\n");
+    printf("=================================================================\n");
+
+}
+
+void headerCustomer(){
+
+    printf("=================================================================\n");
+    printf("|                          Customer Menu                        |\n");
+    printf("=================================================================\n");
+
+}
+
+void headerAdmin(){
+
+    printf("=================================================================\n");
+    printf("|                         Admin Login                           |\n");
+    printf("=================================================================\n");
+
+}
+
 int main()
 {
+    char c;
+    int choice, mainChoice;
+
+    do{
+    system("clear");
+    headerIntitial();
+
+    printf("\n");
+    printf("1. Get admin access\n");
+    printf("2. Continue to customer login\n");
+    printf("3. Terminate the program.\n");
+    printf("Choose an option from the list given above: ");
+    scanf("%d", &mainChoice);
+    
+    switch(mainChoice){
+        case 1:
+            system("clear");
+            headerAdmin();
+            checkadmin();
+            break;
+
+        case 2:
+            system("clear");
+            headerCustomer();
+
+            printf("\n");
+            printf("1. Login for already existing customers. \n");
+            printf("2. New customer registration.\n");
+            printf("Choose one of the above options to continue: ");
+            scanf("%d", &choice);
+            
+            switch(choice){
+                case 1:
+                    system("clear");
+                    headerIntitial();
+                    
+                    if (checkuser() == 1){
+                        system("clear");
+                        headerCustomer();
+
+                        printf("\n");
+                        printf("1. Search for flights.\n");
+                        printf("2. Book tickets.\n");
+                        printf("3. View booked tickets.\n");
+                        printf("4. Cancel tickets.\n");
+                        scanf("%d", &choice);
+
+                    }
+
+                    else{
+                        // printf("Enter valid credentials\n");
+                        printf("Press ENTER to continue...\n");
+                        // choice = 9;
+                        c = getchar();
+                    }
+                    break;
+
+                case 2:
+                    system("clear");
+                    headerIntitial();
+                    adduser();
+                    break;
+
+                default:
+                    system("clear");
+                    // headerAdmin();
+                    // getchar();
+                    break;
+
+                }
+                break;
+        case 3:
+            printf("Terminating... \n");
+            break;
+
+        default:
+            printf("Enter a valid choice.\n");
+            break;
+    }
+    }while(mainChoice != 3);
+
+
+
+
+
     // addFlight();
-    // flightRead();
     // searchFlight();
     // bookFlight();
     // searchFlight();
     // findTicket("F2345-100");
-    viewTicket("F2345-100");
     // printf("%d", isFlightPresent("F2345"));
 
     return 0;
