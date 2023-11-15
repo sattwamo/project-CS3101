@@ -40,14 +40,8 @@ void flightWrite(FLIGHT *flight)
     fclose(fptr);
 }
 
-<<<<<<< HEAD
 
 void ticketWrite(TICKET* ticket){
-=======
-// Tanish
-void ticketWrite(TICKET *ticket)
-{
->>>>>>> 261a86a2d565bf35704610d04735aa752fb28e4e
     FILE *fptr;
     fptr = fopen("tickets.txt", "a");
 
