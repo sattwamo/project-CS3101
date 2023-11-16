@@ -555,26 +555,6 @@ void adduser()
     printf("Your user id is succesfully created :)\n\n");
 }
 
-void addadmin()
-{
-    char id[6], email[50], password[4];
-    char userType = 'A';
-    USERS newadmin;
-    printf("enter the following details with care to register yourself on the system\n");
-    newadmin.userType = userType;
-    printf("enter your email:\n");
-    scanf("%s", email);
-    printf("enter a 6 digit alphanumeric id:\n");
-    scanf("%s", id);
-    printf("enter your 4 digit password:\n");
-    scanf("%s", password);
-    strcpy(newadmin.id, id);
-    strcpy(newadmin.email, email);
-    strcpy(newadmin.password, password);
-    usersWrite(&newadmin);
-    printf("Your admin id is succesfully created :)\n\n");
-}
-
 int checkuser()
 {
     int isLogin = 0;
@@ -602,11 +582,10 @@ int checkuser()
     else{
         printf("Enter valid user ID\n");
     }
-    // printf("%d\n", isLogin);
     return isLogin;
 }
 
-void checkadmin()
+int checkadmin()
 {
     FILE *fptr;
     USERS viewadmin;
@@ -618,53 +597,23 @@ void checkadmin()
     scanf("%s", id);
     while (fread(&viewadmin, sizeof(USERS), 1, fptr))
     {
-        if (id == viewadmin.id)
+        if (!strcmp(id, viewadmin.id))
         {
             printf("enter your 4 digit pasword:\n");
             scanf("%s", password);
-            if (password == viewadmin.id)
+            if (!strcmp(password, viewadmin.password))
             {
                 printf("Login Succesfull\n");
+                return 1;
             }
             else
             {
                 printf("Incorrect Password\n");
+                return 0;
             }
         }
     }
     fclose(fptr);
-}
-
-void admin()
-{
-    addadmin();
-    checkadmin();
-}
-
-void user()
-{
-    adduser();
-    checkuser();
-}
-
-void intro()
-{
-    printf("Welcome to Spicy Flight Reservation System:)\n");
-    int type;
-    printf("Enter 0 if you are a admin or 1 if you are a customer: ");
-    scanf("%d", &type);
-    switch (type)
-    {
-        case 0:
-            admin();
-            break;
-        case 1:
-            user();
-            break;
-        default:
-            printf("Invalid Input");
-            break;
-    }
 }
 
 void headerIntitial(){
@@ -705,9 +654,11 @@ int main()
 {
     char c;
     int choice, mainChoice;
+    char userID[6];
 
     do{
-    system("clear");
+    system("cls"); // for windows    
+    // system("clear"); // for linux/unix
     headerIntitial();
 
     printf("\n");
@@ -719,13 +670,44 @@ int main()
     
     switch(mainChoice){
         case 1:
-            system("clear");
+            system("cls"); // for windows            
+            // system("clear"); // for linux/unix
             headerAdmin();
-            checkadmin();
+            printf("\n");
+            printf("1.Admin login. \n");
+            int choice=0;
+            if(checkadmin()==1)
+            {
+               do{
+                    printf("\n");
+                    printf("1. Tpdate flights.\n");
+                    printf("2. Add flights.\n");
+                    printf("3. Logout\n");
+                    printf("Choose one of the above options to continue: ");
+                    scanf("%d", &choice);
+                    switch(choice)
+                    {
+                        case 1:
+                               printf("enter the flight id to be updated:/n");
+                               scanf("%s", userID);
+                               updateFlight(userID);
+                               break;
+                        case 2:
+                               addFlight();
+                               break;
+                        default:
+                               printf("/n");
+                               break;
+
+                    }
+
+               }while(choice!=3);
+            }
             break;
 
         case 2:
-            system("clear");
+            system("cls"); // for windows            
+            // system("clear"); // for linux/unix
             headerCustomer();
 
             printf("\n");
@@ -736,12 +718,14 @@ int main()
             
             switch(choice){
                 case 1:
-                    system("clear");
+                    system("cls"); // for windows                    
+                    // system("clear"); // for linux/unix
                     headerIntitial();
                     
                     if (checkuser() == 1){
                         do{
-                        system("clear");
+                        system("cls"); // for windows                        
+                        // system("clear"); // for linux/unix
                         headerCustomer();
 
                         printf("\n");
@@ -782,13 +766,15 @@ int main()
                     break;
 
                 case 2:
-                    system("clear");
+                    system("cls"); // for windows                    
+                    // system("clear"); // for linux/unix
                     headerIntitial();
                     adduser();
                     break;
 
                 default:
-                    system("clear");
+                    system("cls"); // for windows                    
+                    // system("clear"); // for linux/unix
                     // headerAdmin();
                     // getchar();
                     break;
@@ -808,7 +794,9 @@ int main()
 
 
 
-
+    // addadmin();
+    // adduser();
+    // checkadmin();
 
     // addFlight();
     // searchFlight();
@@ -819,3 +807,6 @@ int main()
 
     return 0;
 }
+ 
+           
+            
