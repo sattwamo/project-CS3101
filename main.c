@@ -29,6 +29,7 @@ typedef struct ticket
     char name[30];
     char ticketType;
     int seatNum;
+    float price;
 } TICKET;
 
 // Sattwamo
@@ -260,18 +261,19 @@ void updateSeats(char *flightID){
 }
 
 // Tanish
-float makeTicket(char *flightID, int ticketType){
+char* makeTicket(char *flightID, int ticketType){
     TICKET ticket;
     FLIGHT flight = findFlight(flightID);
     int seatNum = flight.availableSeats;
     float price = flight.price[ticketType - 1];
-    char ticketNum[10];
+    char* ticketNum = (char*)malloc(10 * sizeof(char));
     char name[30];
 
     sprintf(ticketNum, "%s-%d", flightID, seatNum);
     printf("Enter passenger name: \n");
     scanf("%s", name);
 
+    ticket.price = price;
     strcpy(ticket.name, name);
     ticket.seatNum = seatNum;
     strcpy(ticket.flightID, flightID);
@@ -293,13 +295,16 @@ float makeTicket(char *flightID, int ticketType){
     ticketWrite(&ticket);
     updateSeats(flightID);
 
-    return price;
+    return ticketNum;
 }
 
 // Tanish
 void bookFlight(){
     char flightID[6];
-    int choice = 5;
+    int choice = 5, i = 0;
+    char* allTicket[10];
+    char display[100] = "Booked ticket numbers: ";
+    TICKET getTicket;
 
     float totalPrice = 0;
 
@@ -316,11 +321,19 @@ void bookFlight(){
 
             if (choice == 1 || choice == 2 || choice == 3)
             {
-                totalPrice += makeTicket(flightID, choice);
+                allTicket[i] = makeTicket(flightID, choice);
+                i++;
             }
             else if (choice == 0)
             {
-                printf("Total ticket price is Rs. %.2f", totalPrice);
+                for (int j = 0; j < i; j++){
+                    getTicket = findTicket(allTicket[j]);
+                    strcat(display, getTicket.ticketNum);
+                    strcat(display, "\t ");
+                    totalPrice += getTicket.price;
+                }
+                printf("Total ticket price is Rs. %.2f\n", totalPrice);
+                printf("%s", display);
             }
             else
             {
