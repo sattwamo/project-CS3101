@@ -692,6 +692,16 @@ void headerAdmin(){
 
 }
 
+void awaitEnter() {
+	// Clear input buffer
+    int c;
+    while ((c = getchar()) != '\n' && c != EOF);
+
+    // Wait for Enter key press
+    printf("\nPress Enter to continue...");
+    getchar(); // This getchar() will now wait for a new Enter key press
+}
+
 int main()
 {
     char c;
@@ -747,10 +757,7 @@ int main()
                         switch(choice){
                             case 1:
                                 searchFlight();
-                                printf("Here:\n");
-                                // scanf("%s", c);
-                                // while (getchar() != '\n');
-                                sleep(5);
+                                awaitEnter();
                             break;
                             case 2:
                                 bookFlight();
