@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
-#include <unistd.h>
 
 typedef struct
 {
@@ -708,7 +707,7 @@ int main()
     int choice, mainChoice;
 
     do{
-    // system("clear");
+    system("clear");
     headerIntitial();
 
     printf("\n");
@@ -720,13 +719,13 @@ int main()
     
     switch(mainChoice){
         case 1:
-            // system("clear");
+            system("clear");
             headerAdmin();
             checkadmin();
             break;
 
         case 2:
-            // system("clear");
+            system("clear");
             headerCustomer();
 
             printf("\n");
@@ -737,12 +736,12 @@ int main()
             
             switch(choice){
                 case 1:
-                    // system("clear");
+                    system("clear");
                     headerIntitial();
                     
                     if (checkuser() == 1){
                         do{
-                        // system("clear");
+                        system("clear");
                         headerCustomer();
 
                         printf("\n");
@@ -777,21 +776,19 @@ int main()
                         }while(choice != 5);
                     }
                     else{
-                        // printf("Enter valid credentials\n");
-                        printf("Press ENTER to continue...\n");
-                        // choice = 9;
-                        // c = getchar();
+                        
+                        awaitEnter();
                     }
                     break;
 
                 case 2:
-                    // system("clear");
+                    system("clear");
                     headerIntitial();
                     adduser();
                     break;
 
                 default:
-                    // system("clear");
+                    system("clear");
                     // headerAdmin();
                     // getchar();
                     break;
