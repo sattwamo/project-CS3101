@@ -229,13 +229,18 @@ void searchFlight(){
     scanf("%s", source);
     printf("Enter destination location: ");
     scanf("%s", destination);
+    int flightsFound = 0;
 
     while (fread(&viewFlight, sizeof(FLIGHT), 1, fptr))
     {
         if ((strcmp(source, viewFlight.source) == 0) && (strcmp(destination, viewFlight.destination) == 0) && (strcmp(date, viewFlight.date) == 0))
         {
+            ++flightsFound;
             printf("FlightID: %s\t\tTime: %s\tPrice: (I:%.2f |C: %.2f |A: %.2f)\t Remaining seats: %d\n", viewFlight.flightID, viewFlight.time, viewFlight.price[0], viewFlight.price[1], viewFlight.price[2], viewFlight.availableSeats);
         }
+
+        if (flightsFound == 0)
+            printf("\nNo flights found for your search.\n");
     }
     fclose(fptr);
 }
@@ -657,8 +662,8 @@ int main()
     char userID[6];
 
     do{
-    system("cls"); // for windows    
-    // system("clear"); // for linux/unix
+    //system("cls"); // for windows    
+    system("clear"); // for linux/unix
     headerIntitial();
 
     printf("\n");
@@ -670,8 +675,8 @@ int main()
     
     switch(mainChoice){
         case 1:
-            system("cls"); // for windows            
-            // system("clear"); // for linux/unix
+            //system("cls"); // for windows            
+            system("clear"); // for linux/unix
             headerAdmin();
             printf("\n");
             printf("1.Admin login. \n");
@@ -706,8 +711,8 @@ int main()
             break;
 
         case 2:
-            system("cls"); // for windows            
-            // system("clear"); // for linux/unix
+            //system("cls"); // for windows            
+            system("clear"); // for linux/unix
             headerCustomer();
 
             printf("\n");
@@ -718,14 +723,14 @@ int main()
             
             switch(choice){
                 case 1:
-                    system("cls"); // for windows                    
-                    // system("clear"); // for linux/unix
+                    //system("cls"); // for windows                    
+                    system("clear"); // for linux/unix
                     headerIntitial();
                     
                     if (checkuser() == 1){
                         do{
-                        system("cls"); // for windows                        
-                        // system("clear"); // for linux/unix
+                        //system("cls"); // for windows                        
+                        system("clear"); // for linux/unix
                         headerCustomer();
 
                         printf("\n");
@@ -747,10 +752,11 @@ int main()
                             break;
                             case 3:
                                 viewTicket();
-                                getchar();
+                                awaitEnter();
                             break;
                             case 5:
                                 printf("Logging out...\n");
+                                awaitEnter();
                             break;
                             default:
                             printf("#");
@@ -766,17 +772,15 @@ int main()
                     break;
 
                 case 2:
-                    system("cls"); // for windows                    
-                    // system("clear"); // for linux/unix
+                    //system("cls"); // for windows                    
+                    system("clear"); // for linux/unix
                     headerIntitial();
                     adduser();
                     break;
 
                 default:
-                    system("cls"); // for windows                    
-                    // system("clear"); // for linux/unix
-                    // headerAdmin();
-                    // getchar();
+                    // system("cls"); // for windows                    
+                    system("clear"); // for linux/unix
                     break;
 
                 }
