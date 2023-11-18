@@ -1,6 +1,3 @@
-// #include <stdio.h>
-
-
 void headerIntitial(){
 
     printf("=================================================================\n");
@@ -28,7 +25,15 @@ void headerCustomer(){
 void headerAdmin(){
 
     printf("=================================================================\n");
-    printf("|                         Admin Login                           |\n");
+    printf("|                         Admin Panel                           |\n");
+    printf("=================================================================\n");
+
+}
+
+void headerLoginAdmin(){
+
+    printf("=================================================================\n");
+    printf("|          ---       Logged in as $ADMIN$        ---            |\n");
     printf("=================================================================\n");
 
 }
@@ -37,6 +42,6 @@ void awaitEnter() {
     int c;
     while ((c = getchar()) != '\n' && c != EOF);
 
-    printf("\nPress Enter to continue...");
+    printf("Press Enter to continue...");
     getchar();
 }

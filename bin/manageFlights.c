@@ -13,11 +13,16 @@ void flightRead()
     FLIGHT viewFlight;
     fptr = fopen("./data/flights.txt", "r");
 
+    printf("\n*** List of all the available flights ***\n");
+    printf("    Flight ID | Source          | Destination     | Date       | Departure Time | Seats Available | Infant Price | Child Price | Adult Price\n");
+    printf("--------------------------------------------------------------------------------------------------------------------------------------------\n");
+
     while (fread(&viewFlight, sizeof(FLIGHT), 1, fptr))
     {
-        printf("FlightID = %s Source = %s Destination = %s\n", viewFlight.flightID, viewFlight.source, viewFlight.destination);
+        printf("[*] %-9s | %-15s | %-15s | %-10s | %-14s | %-15d | %-12.2f | %-11.2f | %-11.2f\n", viewFlight.flightID, viewFlight.source, viewFlight.destination, viewFlight.date, viewFlight.time, viewFlight.availableSeats, viewFlight.price[0], viewFlight.price[1], viewFlight.price[2]);
     }
     fclose(fptr);
+    printf("\n");
 }
 
 int isFlightPresent(char *flightID)
@@ -41,7 +46,8 @@ int isFlightPresent(char *flightID)
     return check;
 }
 
-FLIGHT findFlight(char *flightID){
+FLIGHT findFlight(char *flightID)
+{
     FILE *fptr;
     FLIGHT viewFlight, flight;
     fptr = fopen("./data/flights.txt", "r");
@@ -57,37 +63,38 @@ FLIGHT findFlight(char *flightID){
     return flight;
 }
 
-void addFlight(){
+void addFlight()
+{
     char flightID[6], date[9], time[6], source[20], destination[20];
     float price[3];
     int availableSeats;
     FLIGHT newFlight;
 
-    printf("Enter flight ID: ");
-    scanf("%s", flightID);
+    printf(">>> Enter flight ID: ");
+    scanf("%5s", flightID);
 
-    printf("Enter Date (DD-MM-YY): ");
-    scanf("%s", date);
+    printf(">>> Enter Date (DD-MM-YY): ");
+    scanf("%8s", date);
 
-    printf("Enter departure time (HH:MM): ");
-    scanf("%s", time);
+    printf(">>> Enter departure time (HH:MM): ");
+    scanf("%5s", time);
 
-    printf("Enter source location: ");
-    scanf("%s", source);
+    printf(">>> Enter source location: ");
+    scanf("%19s", source);
 
-    printf("Enter destination location: ");
-    scanf("%s", destination);
+    printf(">>> Enter destination location: ");
+    scanf("%19s", destination);
 
-    printf("Enter number of available seats: ");
+    printf(">>> Enter number of available seats: ");
     scanf("%d", &availableSeats);
 
-    printf("Enter price of tickets for infants (in Rs.): ");
+    printf(">>> Enter price of tickets for infants (in Rs.): ");
     scanf("%f", &price[0]);
 
-    printf("Enter price of tickets for children (in Rs.): ");
+    printf(">>> Enter price of tickets for children (in Rs.): ");
     scanf("%f", &price[1]);
 
-    printf("Enter price of tickets for adults (in Rs.): ");
+    printf(">>> Enter price of tickets for adults (in Rs.): ");
     scanf("%f", &price[2]);
 
     strcpy(newFlight.flightID, flightID);
@@ -101,40 +108,54 @@ void addFlight(){
     newFlight.price[2] = price[2];
 
     flightWrite(&newFlight);
+
+    printf("\n[+] Flight No. %s added successfully.", flightID);
 }
 
-// Tanish
-void searchFlight(){
+void searchFlight()
+{
     char source[20], destination[20], date[9];
     FILE *fptr;
     FLIGHT viewFlight;
     fptr = fopen("./data/flights.txt", "r");
 
-    printf("Enter Date (DD-MM-YY): ");
+    printf("\n>>> Enter Date (DD-MM-YY): ");
     scanf("%s", date);
-    printf("Enter source location: ");
+    printf(">>> Enter source location: ");
     scanf("%s", source);
-    printf("Enter destination location: ");
-    scanf("%s", destination);
+    printf(">>> Enter destination location: ");
+    scanf("%8s", destination);
     int flightsFound = 0;
+    printf("\n");
 
+        printf("    Flight ID | Departure Time | Seats Available | Infant Price | Child Price | Adult Price\n");
+        printf("-------------------------------------------------------------------------------------------\n");
     while (fread(&viewFlight, sizeof(FLIGHT), 1, fptr))
     {
         if ((strcmp(source, viewFlight.source) == 0) && (strcmp(destination, viewFlight.destination) == 0) && (strcmp(date, viewFlight.date) == 0))
         {
             ++flightsFound;
-            printf("FlightID: %s\t\tTime: %s\tPrice: (I:%.2f |C: %.2f |A: %.2f)\t Remaining seats: %d\n", viewFlight.flightID, viewFlight.time, viewFlight.price[0], viewFlight.price[1], viewFlight.price[2], viewFlight.availableSeats);
-        }
+            // printf("[*] FlightID: %s\tTime: %s\tPrice: (I:%.2f |C: %.2f |A: %.2f)\t Remaining seats: %d\n", viewFlight.flightID, viewFlight.time, viewFlight.price[0], viewFlight.price[1], viewFlight.price[2], viewFlight.availableSeats);
 
+            printf("[*] %-9s | %-14s | %-15d | %-12.2f | %-11.2f | %-11.2f\n", viewFlight.flightID, viewFlight.time, viewFlight.availableSeats, viewFlight.price[0], viewFlight.price[1], viewFlight.price[2]);
+
+
+
+
+
+
+
+        }
     }
 
     if (flightsFound == 0)
-        printf("\nNo flights found for your search.\n");
+        {printf("*** No flights found for your search. ***\n");}
+    else{printf("\n");}
     fclose(fptr);
 }
 
-// Sattwamo
-void updateSeats(char *flightID){
+void updateSeats(char *flightID)
+{
     FLIGHT updateFlight;
     FILE *fptr;
     fptr = fopen("./data/flights.txt", "r+");
@@ -170,8 +191,7 @@ void updateFlight(char *flightID)
         if (!strcmp(flightID, updateFlight.flightID))
         {
             count = 1;
-        p1:
-            printf("Select what you want to update:\
+            printf("\nSelect what you want to update:\
             \n1. Departure date\
             \n2. Departure time\
             \n3. Source location\
@@ -181,82 +201,93 @@ void updateFlight(char *flightID)
             \n7. Price of tickets for children\
             \n8. Price of tickets for adults\
             \n0. Continue without making any changes\n");
+            printf("\n>>> Choose any one of the above options: ");
             scanf("%d", &choice);
 
             switch (choice)
             {
             case 1:
-                printf("Enter new date (DD-MM-YY): ");
-                scanf("%s", date);
+                printf("\n>>> Enter new date (DD-MM-YY): ");
+                scanf("%8s", date);
                 strcpy(updateFlight.date, date);
                 fseek(fptr, -sizeof(FLIGHT), 1);
                 fwrite(&updateFlight, sizeof(FLIGHT), 1, fptr);
+                printf("\n[+] Departure date of flight no. %s updated successfully.", flightID);
                 break;
 
             case 2:
-                printf("Enter new departure time (HH:MM): ");
-                scanf("%s", time);
+                printf("\n>>> Enter new departure time (HH:MM): ");
+                scanf("%5s", time);
                 strcpy(updateFlight.time, time);
                 fseek(fptr, -sizeof(FLIGHT), 1);
                 fwrite(&updateFlight, sizeof(FLIGHT), 1, fptr);
+                printf("\n[+] Departure time of flight no. %s updated successfully.", flightID);
                 break;
 
             case 3:
-                printf("Enter new source location: ");
-                scanf("%s", source);
+                printf("\n>>> Enter new source location: ");
+                scanf("%19s", source);
                 strcpy(updateFlight.source, source);
                 fseek(fptr, -sizeof(FLIGHT), 1);
                 fwrite(&updateFlight, sizeof(FLIGHT), 1, fptr);
+                printf("\n[+] Source of flight no. %s updated successfully.", flightID);
                 break;
 
             case 4:
-                printf("Enter new destination location: ");
-                scanf("%s", destination);
+                printf("\n>>> Enter new destination location: ");
+                scanf("%19s", destination);
                 strcpy(updateFlight.destination, destination);
                 fseek(fptr, -sizeof(FLIGHT), 1);
                 fwrite(&updateFlight, sizeof(FLIGHT), 1, fptr);
+                printf("\n[+] Destination of flight no. %s updated successfully.", flightID);
                 break;
 
             case 5:
-                printf("Enter new number of available seats: ");
+                printf("\n>>> Enter new number of available seats: ");
                 scanf("%d", &availableSeats);
                 updateFlight.availableSeats = availableSeats;
                 fseek(fptr, -sizeof(FLIGHT), 1);
                 fwrite(&updateFlight, sizeof(FLIGHT), 1, fptr);
+                printf("\n[+] Number of available seats of flight no. %s updated successfully.", flightID);
                 break;
 
             case 6:
-                printf("Enter new price of tickets for infants (in Rs.): ");
+                printf("\n>>> Enter new price of tickets for infants (in Rs.): ");
                 scanf("%f", &price[0]);
                 updateFlight.price[0] = price[0];
                 fseek(fptr, -sizeof(FLIGHT), 1);
                 fwrite(&updateFlight, sizeof(FLIGHT), 1, fptr);
+                printf("\n[+] Price of tickets for infants in flight no. %s updated successfully.", flightID);
                 break;
 
             case 7:
-                printf("Enter new price of tickets for children (in Rs.): ");
+                printf("\n>>> Enter new price of tickets for children (in Rs.): ");
                 scanf("%f", &price[1]);
                 updateFlight.price[1] = price[1];
                 fseek(fptr, -sizeof(FLIGHT), 1);
                 fwrite(&updateFlight, sizeof(FLIGHT), 1, fptr);
+                printf("\n[+] Price of tickets for children in flight no. %s updated successfully.", flightID);
                 break;
 
             case 8:
-                printf("Enter new price of tickets for adults (in Rs.): ");
+                printf("\n>>> Enter new price of tickets for adults (in Rs.): ");
                 scanf("%f", &price[2]);
                 updateFlight.price[2] = price[2];
                 fseek(fptr, -sizeof(FLIGHT), 1);
                 fwrite(&updateFlight, sizeof(FLIGHT), 1, fptr);
+                printf("\n[+] Price of tickets for adults in flight no. %s updated successfully.", flightID);
                 break;
 
             case 0:
-                printf("Continuiung... ");
+                system("clear");
+                headerLoginAdmin();
+                printf("\n*** Returning to main menu.***\n ");
                 break;
 
             default:
-                printf("Enter a valid choice!!!");
+                printf("\n*** Enter a valid choice! ***\n");
+                awaitEnter();
                 break;
-                // goto p1;
             }
         }
     }
@@ -265,6 +296,7 @@ void updateFlight(char *flightID)
 
     if (!count)
     {
-        printf("Enter valid flight ID!\n");
+        printf("\n*** Enter valid flight ID! ***\n");
+        awaitEnter();
     }
 }

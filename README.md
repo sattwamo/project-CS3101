@@ -1,10 +1,8 @@
 # project-CS3101
 
-A group project for the final evaluation of course **CS3101**. 
+A group project for the final evaluation of course **CS3101**.
 
-We have developed a *prototype for a flight reservation system*. 
-
-
+We have developed a *prototype for a flight reservation system*.
 
 ---
 
@@ -17,10 +15,12 @@ We have developed a *prototype for a flight reservation system*.
   * [ ] Manage bookings directly (superUser permissions)
 * [X] Customer Registration Panel
 * [X] Customer Login Panel
+  * [X] List all the available flights
   * [X] Search for flights
   * [X] Book flight tickets
   * [X] View booked ticket details
-  * [ ] Cancel booked tickets
+  * [X] Cancel booked tickets
+  * [ ] User specific accounts
 
 ---
 
