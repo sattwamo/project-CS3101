@@ -124,7 +124,7 @@ void searchFlight()
     printf(">>> Enter source location: ");
     scanf("%s", source);
     printf(">>> Enter destination location: ");
-    scanf("%8s", destination);
+    scanf("%s", destination);
     int flightsFound = 0;
     printf("\n");
 
@@ -286,7 +286,7 @@ void updateFlight(char *flightID)
 
             default:
                 printf("\n*** Enter a valid choice! ***\n");
-                awaitEnter();
+                // awaitEnter();
                 break;
             }
         }

@@ -2,11 +2,11 @@
 #include <string.h>
 #include <stdlib.h>
 
-#include "./bin/structures.c"
-#include "./bin/display.c"
-#include "./bin/manageFlights.c"
-#include "./bin/manageTickets.c"
-#include "./bin/manageUsers.c"
+#include "./modules/structures.c"
+#include "./modules/display.c"
+#include "./modules/manageFlights.c"
+#include "./modules/manageTickets.c"
+#include "./modules/manageUsers.c"
 
 int main()
 {
