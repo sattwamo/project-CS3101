@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <ctype.h>
 
 #include "./modules/structures.c"
 #include "./modules/display.c"
@@ -13,8 +14,6 @@ int main()
     char c;
     int choice, mainChoice;
     char userID[6];
-
-    // addAdmin();
 
     do
     {
@@ -43,15 +42,35 @@ int main()
                     system("clear");
                     headerLoginAdmin();
                     printf("\n");
-                    printf("1. Update existing flights.\n");
-                    printf("2. Add new flights.\n");
-                    printf("3. Logout\n");
+                    printf("1. List all available flights.\n");
+                    printf("2. Search flights through a general query.\n");
+                    printf("3. Update existing flights.\n");
+                    printf("4. Add new flights.\n");
+                    printf("5. Logout\n");
                     printf("\n>>> Choose one of the above options to continue: ");
                     scanf("%d", &choice);
 
                     switch (choice)
                     {
                     case 1:
+                        system("clear");
+                        headerLoginAdmin();
+
+                        flightRead();
+                        awaitEnter();
+                        break;
+                    
+                    case 2:
+                        system("clear");
+                        headerLoginAdmin();
+                        printf("\nThis is a very rudimentary search function.\nUser can input any data regarding the flights they want to see\n(like source, destination, departure date, time, etc.) and get corresponding results.\nThe admin can use flight ID to search here as well.\nNOTE: Enter full source/destination name in order to get result\n\n");
+                        
+                        generalQuery();
+                        awaitEnter();
+
+                        break;
+
+                    case 3:
                         system("clear");
                         headerLoginAdmin();
 
@@ -66,7 +85,7 @@ int main()
 
                         break;
 
-                    case 2:
+                    case 4:
                         system("clear");
                         headerLoginAdmin();
 
@@ -75,7 +94,7 @@ int main()
                         awaitEnter();
                         break;
 
-                    case 3:
+                    case 5:
                         system("clear");
                         headerAdmin();
 
@@ -86,7 +105,7 @@ int main()
                         break;
                     }
 
-                } while (choice != 3);
+                } while (choice != 5);
             }
 
             else
@@ -124,21 +143,30 @@ int main()
 
                         printf("\n");
                         printf("1. List all the available flights.\n");
-                        printf("2. Search for specific flights.\n");
-                        printf("3. Book tickets.\n");
-                        printf("4. View booked tickets.\n");
-                        printf("5. Cancel tickets.\n");
-                        printf("6. Logout\n");
+                        printf("2. Search for flights through a general query.\n");
+                        printf("3. Search for specific flights.\n");
+                        printf("4. Book tickets.\n");
+                        printf("5. View booked tickets.\n");
+                        printf("6. Cancel tickets.\n");
+                        printf("7. Logout\n");
                         printf("\n>>> Choose one of the above options to continue: ");
                         scanf("%d", &choice);
 
                         switch (choice)
                         {
-                        case 2:
+                        case 3:
                             system("clear");
                             headerCustomer();
 
                             searchFlight();
+                            awaitEnter();
+                            break;
+                        case 2:
+                            system("clear");
+                            headerCustomer();
+                            printf("\nThis is a very rudimentary search function.\nUser can input any data regarding the flights they want to see\n(like source, destination, departure date, time, etc.) and get corresponding results.\nThe input can be of any type, such as names of places, date(DD-MM-YY), time(HH:MM), in a single query\nNOTE: Enter full source/destination name in order to get result\n\n");
+                            
+                            generalQuery();
                             awaitEnter();
                             break;
                         case 1:
@@ -148,28 +176,28 @@ int main()
                             flightRead();
                             awaitEnter();
                             break;
-                        case 3:
+                        case 4:
                             system("clear");
                             headerCustomer();
 
                             bookFlight();
                             awaitEnter();
                             break;
-                        case 4:
+                        case 5:
                             system("clear");
                             headerCustomer();
 
                             viewTicket();
                             awaitEnter();
                             break;
-                        case 5:
+                        case 6:
                             system("clear");
                             headerCustomer();
 
                             cancelTicket();
                             awaitEnter();
                             break;
-                        case 6:
+                        case 7:
                             system("clear");
                             headerCustomer();
                             printf("\n[-] Logging out...\n");
@@ -179,7 +207,7 @@ int main()
                             printf("#\n");
                             break;
                         }
-                    } while (choice != 6);
+                    } while (choice != 7);
                 }
                 else
                 {

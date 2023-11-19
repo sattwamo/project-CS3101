@@ -117,18 +117,41 @@ char* makeTicket(char *flightID, int ticketType){
 
 void bookFlight(){
     char flightID[6];
-    int choice = 5, i = 0;
+    int choice = 5, i = 0, allowed = 0;
     char* allTicket[10];
     char display[150] = "[*] Booked ticket numbers: ";
+    char source[30], destination[30], date[9], time[6];
     TICKET getTicket;
+    FLIGHT getFlight;
+
+    FILE *fptr;
+    fptr = fopen("./data/flights.txt", "r");
 
     float totalPrice = 0;
 
     printf("\n>>> Enter flight ID: ");
     scanf("%5s", flightID);
 
-    if (isFlightPresent(flightID))
+    while (fread(&getFlight, sizeof(FLIGHT), 1, fptr)){
+        if (!strcmp(getFlight.flightID, flightID)){
+            strcpy(source, getFlight.source);
+            strcpy(destination, getFlight.destination);
+            strcpy(date, getFlight.date);
+            strcpy(time, getFlight.time);
+            if(getFlight.availableSeats > 0){
+                allowed = 1;
+            }
+        }
+    }
+
+    fclose(fptr);
+
+    if (isFlightPresent(flightID) && allowed)
     {
+        printf("[*] Source: %s\n", source);
+        printf("[*] Destination: %s\n", destination);
+        printf("[*] Departure date: %s\n", date);
+        printf("[*] Departure time: %s\n", time);
         while (choice)
         {
             printf("\nAvailable ticket type: \n1. Infant \n2. Child \n3. Adult\n");

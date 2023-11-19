@@ -300,3 +300,58 @@ void updateFlight(char *flightID)
         awaitEnter();
     }
 }
+
+void generalQuery(){
+    FILE *fptr = fopen("./data/flights.txt", "r");
+    FLIGHT search;
+
+    char lowercaseFlightID[10];
+    char lowercaseSource[30];
+    char lowercaseDestination[30];
+    char lowercaseDate[10];
+    char lowercaseDepartureTime[6];
+
+
+    char query[100];
+
+    int m;
+    printf(">>> Enter your query: ");
+    m = getchar();
+    fgets(query, 100, stdin);
+    
+    for (int j = 0; query[j]; j++){
+        query[j] = tolower(query[j]);
+    }
+    
+    printf("\n*** List of all the available flights ***\n");
+    printf("    Flight ID | Source          | Destination     | Date       | Departure Time | Seats Available | Infant Price | Child Price | Adult Price\n");
+    printf("--------------------------------------------------------------------------------------------------------------------------------------------\n");
+
+    while (fread(&search, sizeof(FLIGHT), 1, fptr)){
+        strcpy(lowercaseFlightID, search.flightID);
+        strcpy(lowercaseSource, search.source);
+        strcpy(lowercaseDestination, search.destination);
+        strcpy(lowercaseDate, search.date);
+        strcpy(lowercaseDepartureTime, search.time);
+
+        for (int j = 0; lowercaseFlightID[j]; j++) {
+            lowercaseFlightID[j] = tolower(lowercaseFlightID[j]);
+        }
+
+        for (int j = 0; lowercaseSource[j]; j++) {
+            lowercaseSource[j] = tolower(lowercaseSource[j]);
+        }
+
+        for (int j = 0; lowercaseDestination[j]; j++) {
+            lowercaseDestination[j] = tolower(lowercaseDestination[j]);
+        }
+
+        if (strstr(query, lowercaseFlightID) || strstr(query, lowercaseSource) ||
+            strstr(query, lowercaseDestination) || strstr(query, lowercaseDate) ||
+            strstr(query, lowercaseDepartureTime)) {
+            printf("[*] %-9s | %-15s | %-15s | %-10s | %-14s | %-15d | %-12.2f | %-11.2f | %-11.2f\n", search.flightID, search.source, search.destination, search.date, search.time, search.availableSeats, search.price[0], search.price[1], search.price[2]);
+
+            }
+    }
+    
+}
