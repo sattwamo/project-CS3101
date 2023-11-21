@@ -1,3 +1,5 @@
+// functions handled by Om Khare, 21MS084
+// function to write new users data to database
 void usersWrite(USERS *user)
 {
     FILE *fptr;
@@ -6,6 +8,7 @@ void usersWrite(USERS *user)
     fclose(fptr);
 }
 
+// function to extract details of user accounts from database
 USERS viewUser(char *userID)
 {
     FILE *fptr;
@@ -24,6 +27,7 @@ USERS viewUser(char *userID)
     return user;
 }
 
+// function to check if a particular user ID is present or not
 int isUserPresent(char *userID)
 {
     int check = 0;
@@ -43,6 +47,7 @@ int isUserPresent(char *userID)
     return check;
 }
 
+// function to add new user accounts
 void addUser()
 {
     char id[6], email[50], password[5];
@@ -63,6 +68,8 @@ void addUser()
     printf("\n*** Your user id is succesfully created :) ***\n\n");
 }
 
+// function to add new admin accounts
+// not integrated into the system as admin access should be restricted
 void addAdmin()
 {
     char id[6], email[50], password[5];
@@ -83,6 +90,7 @@ void addAdmin()
     printf("\n*** The admin ID has been succesfully created :) ***\n\n");
 }
 
+// function to login a user
 int checkUser()
 {
     int isLogin = 0;
@@ -119,6 +127,7 @@ int checkUser()
     return isLogin;
 }
 
+// function to login an admin
 int checkAdmin()
 {
     FILE *fptr;

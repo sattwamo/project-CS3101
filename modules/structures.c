@@ -1,3 +1,4 @@
+// structures used throughout the program
 typedef struct
 {
     char userType;

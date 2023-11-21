@@ -1,3 +1,5 @@
+// functions handled by Tanish Nimbalkar, 21MS207
+// function to write flight data to the database
 void flightWrite(FLIGHT *flight)
 {
     FILE *fptr;
@@ -7,6 +9,7 @@ void flightWrite(FLIGHT *flight)
     fclose(fptr);
 }
 
+// function to display all the flights present in the database
 void flightRead()
 {
     FILE *fptr;
@@ -25,6 +28,7 @@ void flightRead()
     printf("\n");
 }
 
+// function to check if a flight corresponding to a particular flight ID is present or not
 int isFlightPresent(char *flightID)
 {
 
@@ -46,6 +50,7 @@ int isFlightPresent(char *flightID)
     return check;
 }
 
+// function to retrieve data corresponding to a particular flight from database
 FLIGHT findFlight(char *flightID)
 {
     FILE *fptr;
@@ -63,6 +68,7 @@ FLIGHT findFlight(char *flightID)
     return flight;
 }
 
+// function to add new flights in the database
 void addFlight()
 {
     char flightID[6], date[9], time[6], source[20], destination[20];
@@ -112,6 +118,7 @@ void addFlight()
     printf("\n[+] Flight No. %s added successfully.", flightID);
 }
 
+// function to search for flights given some particular queries
 void searchFlight()
 {
     char source[20], destination[20], date[9];
@@ -154,6 +161,7 @@ void searchFlight()
     fclose(fptr);
 }
 
+// function to update available number of seats in a flight
 void updateSeats(char *flightID)
 {
     FLIGHT updateFlight;
@@ -173,6 +181,7 @@ void updateSeats(char *flightID)
     fclose(fptr);
 }
 
+// function to update data corresponding to a particular flight ID in the database
 void updateFlight(char *flightID)
 {
     char date[9], time[6], source[20], destination[20];
@@ -301,6 +310,8 @@ void updateFlight(char *flightID)
     }
 }
 
+// the folllowing function was handled by Sattwamo Ghosh, 21MS204
+// function to search flights using a general query
 void generalQuery(){
     FILE *fptr = fopen("./data/flights.txt", "r");
     FLIGHT search;

@@ -1,3 +1,5 @@
+// functions handled by Sattwamo Ghosh, 21MS204
+// functions to print the various headers
 void headerIntitial(){
 
     printf("=================================================================\n");
@@ -5,14 +7,6 @@ void headerIntitial(){
     printf("=================================================================\n");
 
 }
-
-// void headerCustomer(char* userID){
-
-//     printf("=================================================================\n");
-//     printf("|                     Logged in as %s                        |\n", userID);
-//     printf("=================================================================\n");
-
-// }
 
 void headerCustomer(){
 
@@ -38,6 +32,8 @@ void headerLoginAdmin(){
 
 }
 
+// function handled by Tanish Nimbalkar, 21MS207
+// function to wait until user input detected
 void awaitEnter() {
     int c;
     while ((c = getchar()) != '\n' && c != EOF);

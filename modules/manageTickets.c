@@ -1,3 +1,5 @@
+// functions handled by Sattwamo Ghosh, 21MS204
+// function to write new ticket data to file
 void ticketWrite(TICKET *ticket)
 {
     FILE *fptr;
@@ -7,6 +9,7 @@ void ticketWrite(TICKET *ticket)
     fclose(fptr);
 }
 
+// function to check if a ticket corresponding to a particular tikcet number is present or not
 int isTicketPresent(char *ticketNum)
 {
 
@@ -28,6 +31,7 @@ int isTicketPresent(char *ticketNum)
     return check;
 }
 
+// function to retrieve all the data about a particular ticket number from database
 TICKET findTicket(char *ticketNum){
 
     FILE *fptr;
@@ -46,6 +50,7 @@ TICKET findTicket(char *ticketNum){
     return ticket;
 }
 
+// function to display a particular ticket present in the system
 void viewTicket(){
     char ticketNum[10];
 
@@ -75,6 +80,7 @@ void viewTicket(){
     }
 }
 
+// function to create a new ticket
 char* makeTicket(char *flightID, int ticketType){
     TICKET ticket;
     FLIGHT flight = findFlight(flightID);
@@ -115,6 +121,7 @@ char* makeTicket(char *flightID, int ticketType){
     return ticketNum;
 }
 
+// function to make a new booking in a flight
 void bookFlight(){
     char flightID[6];
     int choice = 5, i = 0, allowed = 0;
@@ -187,6 +194,7 @@ void bookFlight(){
     }
 }
 
+// function to cancel an existing ticket
 void cancelTicket(){
     FILE *fptr1, *fptr2;
     TICKET updateTicket;
